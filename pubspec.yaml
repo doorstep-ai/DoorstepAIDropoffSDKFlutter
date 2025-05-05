@@ -1,7 +1,8 @@
 name: doorstepai_dropoff_sdk
-description: "A new Flutter plugin project."
+description: "Dropoff SDK for Flutter"
 version: 0.0.1
-homepage:
+homepage: https://github.com/doorstep-ai/DoorstepAIDropoffSDKFlutter
+repository: https://github.com/doorstep-ai/DoorstepAIDropoffSDKFlutter
 
 environment:
   sdk: ^3.5.3
