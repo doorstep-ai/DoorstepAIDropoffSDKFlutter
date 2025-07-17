@@ -81,8 +81,32 @@
       },
       {
         "kind": "Import",
+        "name": "os",
+        "printedName": "os",
+        "declKind": "Import",
+        "moduleName": "DoorstepDropoffSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "DoorstepDropoffSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "UIKit",
         "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "DoorstepDropoffSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
         "declKind": "Import",
         "moduleName": "DoorstepDropoffSDK"
       },
@@ -695,106 +719,6 @@
         "printedName": "DoorstepAI",
         "children": [
           {
-            "kind": "Var",
-            "name": "devMode",
-            "printedName": "devMode",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Bool",
-                "printedName": "Swift.Bool",
-                "usr": "s:Sb"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:18DoorstepDropoffSDK0A2AIC7devModeSbvpZ",
-            "mangledName": "$s18DoorstepDropoffSDK0A2AIC7devModeSbvpZ",
-            "moduleName": "DoorstepDropoffSDK",
-            "static": true,
-            "declAttributes": [
-              "HasInitialValue",
-              "Final",
-              "HasStorage",
-              "AccessControl"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Bool",
-                    "printedName": "Swift.Bool",
-                    "usr": "s:Sb"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:18DoorstepDropoffSDK0A2AIC7devModeSbvgZ",
-                "mangledName": "$s18DoorstepDropoffSDK0A2AIC7devModeSbvgZ",
-                "moduleName": "DoorstepDropoffSDK",
-                "static": true,
-                "implicit": true,
-                "declAttributes": [
-                  "Final"
-                ],
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Bool",
-                    "printedName": "Swift.Bool",
-                    "usr": "s:Sb"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:18DoorstepDropoffSDK0A2AIC7devModeSbvsZ",
-                "mangledName": "$s18DoorstepDropoffSDK0A2AIC7devModeSbvsZ",
-                "moduleName": "DoorstepDropoffSDK",
-                "static": true,
-                "implicit": true,
-                "declAttributes": [
-                  "Final"
-                ],
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:18DoorstepDropoffSDK0A2AIC7devModeSbvMZ",
-                "mangledName": "$s18DoorstepDropoffSDK0A2AIC7devModeSbvMZ",
-                "moduleName": "DoorstepDropoffSDK",
-                "static": true,
-                "implicit": true,
-                "declAttributes": [
-                  "Final"
-                ],
-                "accessorKind": "_modify"
-              }
-            ]
-          },
-          {
             "kind": "Function",
             "name": "setApiKey",
             "printedName": "setApiKey(key:)",
@@ -814,6 +738,28 @@
             "declKind": "Func",
             "usr": "s:18DoorstepDropoffSDK0A2AIC9setApiKey3keyySS_tFZ",
             "mangledName": "$s18DoorstepDropoffSDK0A2AIC9setApiKey3keyySS_tFZ",
+            "moduleName": "DoorstepDropoffSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "enableDevMode",
+            "printedName": "enableDevMode()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:18DoorstepDropoffSDK0A2AIC13enableDevModeyyFZ",
+            "mangledName": "$s18DoorstepDropoffSDK0A2AIC13enableDevModeyyFZ",
             "moduleName": "DoorstepDropoffSDK",
             "static": true,
             "declAttributes": [
@@ -982,6 +928,52 @@
             "declKind": "Func",
             "usr": "s:18DoorstepDropoffSDK0A2AIC12stopDelivery10deliveryIdySS_tYaFZ",
             "mangledName": "$s18DoorstepDropoffSDK0A2AIC12stopDelivery10deliveryIdySS_tYaFZ",
+            "moduleName": "DoorstepDropoffSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hasCachedData",
+            "printedName": "hasCachedData()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:18DoorstepDropoffSDK0A2AIC13hasCachedDataSbyFZ",
+            "mangledName": "$s18DoorstepDropoffSDK0A2AIC13hasCachedDataSbyFZ",
+            "moduleName": "DoorstepDropoffSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "waitForCacheDataCompletion",
+            "printedName": "waitForCacheDataCompletion()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:18DoorstepDropoffSDK0A2AIC26waitForCacheDataCompletionSbyYaFZ",
+            "mangledName": "$s18DoorstepDropoffSDK0A2AIC26waitForCacheDataCompletionSbyYaFZ",
             "moduleName": "DoorstepDropoffSDK",
             "static": true,
             "declAttributes": [
@@ -1877,126 +1869,119 @@
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "IntegerLiteral",
-      "offset": 2143,
+      "offset": 2223,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "StringLiteral",
-      "offset": 2833,
+      "offset": 2913,
       "length": 21,
       "value": "\"NetworkMonitorQueue\""
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "BooleanLiteral",
-      "offset": 2886,
+      "offset": 2966,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "IntegerLiteral",
-      "offset": 2931,
+      "offset": 3011,
       "length": 1,
       "value": "5"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "IntegerLiteral",
-      "offset": 2976,
+      "offset": 3056,
       "length": 2,
       "value": "20"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "Array",
-      "offset": 3066,
+      "offset": 3146,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "StringLiteral",
-      "offset": 3121,
+      "offset": 3201,
       "length": 24,
       "value": "\"RequestQueueProcessing\""
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "StringLiteral",
-      "offset": 3199,
+      "offset": 3279,
       "length": 24,
       "value": "\"pendingNetworkRequests\""
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
-      "kind": "StringLiteral",
-      "offset": 3308,
-      "length": 9,
-      "value": "\"network\""
-    },
-    {
-      "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "BooleanLiteral",
-      "offset": 3362,
+      "offset": 3347,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "BooleanLiteral",
-      "offset": 3438,
+      "offset": 3423,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "StringLiteral",
-      "offset": 3514,
+      "offset": 3499,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "Dictionary",
-      "offset": 3567,
+      "offset": 3552,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "IntegerLiteral",
-      "offset": 24440,
+      "offset": 24422,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Network.swift",
       "kind": "IntegerLiteral",
-      "offset": 28262,
+      "offset": 28227,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Sensors\/InternalSensor.swift",
+      "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/InternalSensor.swift",
       "kind": "IntegerLiteral",
-      "offset": 3087,
+      "offset": 3104,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/DoorstepAI.swift",
       "kind": "Array",
-      "offset": 1346,
+      "offset": 1361,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/DoorstepAI.swift",
       "kind": "BooleanLiteral",
-      "offset": 1387,
+      "offset": 1395,
       "length": 5,
       "value": "false"
     },
@@ -2015,7 +2000,7 @@
       "value": "\"dataCollect\""
     },
     {
-      "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/Sensors\/LocationManager.swift",
+      "filePath": "\/Users\/sheelpatel\/Documents\/doorstepai\/doorstepai-track\/SDKs\/iOS\/DoorstepDropoffSDK\/DoorstepDropoffSDK\/src\/LocationManager.swift",
       "kind": "BooleanLiteral",
       "offset": 920,
       "length": 5,

@@ -20,11 +20,11 @@ class DoorstepAiView extends StatefulWidget {
   final String? notificationText;
 
   const DoorstepAiView({
-    Key? key,
+    super.key,
     required this.apiKey,
     this.notificationTitle,
     this.notificationText
-  }) : super(key: key);
+  });
 
   @override
   State<DoorstepAiView> createState() => _DoorstepAiViewState();
@@ -38,13 +38,21 @@ class _DoorstepAiViewState extends State<DoorstepAiView> {
   }
 
   Future<void> _initialize() async {
-    // Initialize SDK
+
+    
+    // Initialize SDK first
     await DoorstepAI.init(
       notificationTitle: widget.notificationTitle,
       notificationText: widget.notificationText,
-    );
+    ).then((value) {
+      print("initialized DoorstepAiView");
+    }).catchError((error) {
+      print("error initializing DoorstepAiView: $error");
+    });
+
+    print("setting api key: ${widget.apiKey}");
     
-    // Set API key
+    // Set API key after initialization
     await DoorstepAI.setApiKey(widget.apiKey);
 
     // Request permissions on Android
@@ -54,15 +62,15 @@ class _DoorstepAiViewState extends State<DoorstepAiView> {
         Permission.activityRecognition: 'Activity Recognition',
       };
 
-      print('Checking Android permission statuses...');
+      debugPrint('Checking Android permission statuses...');
       for (var entry in permissions.entries) {
         final permission = entry.key;
         final name = entry.value;
         final status = await permission.status;
-        print('- $name status: $status');
+        debugPrint('- $name status: $status');
       }
 
-      print('Requesting Android permissions sequentially...');
+      debugPrint('Requesting Android permissions sequentially...');
       // final results = await Future.wait(
       //   permissions.keys.map((permission) => permission.request()),
       // );
@@ -72,30 +80,30 @@ class _DoorstepAiViewState extends State<DoorstepAiView> {
       for (var entry in permissions.entries) {
         final permission = entry.key;
         final name = entry.value;
-        print('Requesting $name...');
+        debugPrint('Requesting $name...');
         final status = await permission.request();
         results[permission] = status;
-        print('- $name requested, status: $status');
+        debugPrint('- $name requested, status: $status');
       }
 
       // Re-check status after request
-      print('Permission statuses after sequential request:');
+      debugPrint('Permission statuses after sequential request:');
       // int index = 0;
       for (var entry in permissions.entries) {
         final permission = entry.key;
         final name = entry.value;
         final status = results[permission]; // Use the results map
-        print('- $name status: $status');
+        debugPrint('- $name status: $status');
         // index++;
       }
 
       if (results.values.every((status) => status.isGranted)) {
-        print('Required Android permissions granted');
+        debugPrint('Required Android permissions granted');
       } else {
-        print('One or more required Android permissions denied');
+        debugPrint('One or more required Android permissions denied');
       }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      print('iOS: Ensure location and motion usage descriptions are in Info.plist');
+      debugPrint('iOS: Ensure location and motion usage descriptions are in Info.plist');
     }
   }
 
@@ -103,7 +111,7 @@ class _DoorstepAiViewState extends State<DoorstepAiView> {
   Widget build(BuildContext context) {
     // Only supported on iOS
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return SizedBox(
+      return const SizedBox(
         height: 0,
         child: UiKitView(
           viewType: 'DoorstepAIRootView',

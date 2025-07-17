@@ -2,6 +2,9 @@ package ai.doorstep.com.doorstepai_dropoff_sdk
 
 import android.content.Context // Import Context
 import androidx.annotation.NonNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -26,42 +29,37 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
     this.context = flutterPluginBinding.applicationContext // Initialize context
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "doorstepai_dropoff_sdk")
     channel.setMethodCallHandler(this)
-
-    /*DoorstepAI.init(context) { result -> // Use context variable
-      if (result.isSuccess) {
-        android.util.Log.d("DoorstepAI", "SDK initialized successfully")
-        // no-op
-      } else {
-        android.util.Log.d("DoorstepAI", "SDK init fail")
-      }
-    }*/
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
       "init" -> {
-        // Android initialization happens in onAttachedToEngine via DoorstepAI.init(context)
-        // This handler is mainly here to acknowledge the call from Flutter
-        // We can potentially pass notification settings here if the native SDK supports updating them later
-        // For now, just acknowledge the call.
-        android.util.Log.d("DoorstepAI", "Received init call from Flutter.")
-        // Optionally handle notificationTitle/notificationText if needed
-        val title = call.argument<String>("notificationTitle")
-        val text = call.argument<String>("notificationText")
-        if (title != null && text != null && this.context != null) { // Check if context is not null
-            DoorstepAI.init(this.context!!, title, text) { sdkResult -> // Use stored context
-                if (sdkResult.isSuccess) {
-                    android.util.Log.d("DoorstepAI", "SDK initialized with notifications successfully")
-                } else {
-                    android.util.Log.d("DoorstepAI", "SDK init with notifications failed")
-                }
+        val notificationTitle = call.argument<String>("notificationTitle")
+        val notificationText = call.argument<String>("notificationText")
+
+
+
+        try {
+          if (notificationTitle != null && notificationText != null && this.context != null) {
+            DoorstepAI.init(this.context!!, notificationTitle, notificationText) { sdkResult ->
+              sdkResult.onSuccess {
+                result.success(true)
+              }.onFailure { error ->
+                result.error("INIT_ERROR", error.message ?: "Failed to initialize DoorstepAI", null)
+              }
             }
+          } else {
+            result.error("BAD_ARGS", "notificationTitle, notificationText, or context missing", null)
+          }
+        } catch (e: Exception) {
+          result.error("INIT_ERROR", e.message ?: "Failed to initialize DoorstepAI", null)
         }
-        result.success(null) // Indicate success back to Flutter
       }
+      
       "getPlatformVersion" -> {
          result.success("Android ${android.os.Build.VERSION.RELEASE}")
       }
+      
       "setApiKey" -> {
         val key = call.argument<String>("key")
         if (key == null) {
@@ -81,12 +79,16 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
         if (placeID == null || deliveryId == null) {
           return result.error("BAD_ARGS", "placeID or deliveryId missing", null)
         }
-        DoorstepAI.startDeliveryByPlaceID(placeID, deliveryId) { sdkResult ->
-          if (sdkResult.isSuccess) {
-            result.success(sdkResult.getOrNull())
-          } else {
-            result.error("DELIVERY_ERR", sdkResult.exceptionOrNull()?.localizedMessage, null)
+        try {
+          DoorstepAI.startDeliveryByPlaceID(placeID, deliveryId) { sdkResult ->
+            sdkResult.onSuccess { sessionId ->
+              result.success(sessionId)
+            }.onFailure { error ->
+              result.error("DELIVERY_ERROR", error.message ?: "Failed to start delivery by Place ID", null)
+            }
           }
+        } catch (e: Exception) {
+          result.error("DELIVERY_ERROR", e.message ?: "Failed to start delivery by Place ID", null)
         }
       }
 
@@ -96,12 +98,16 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
         if (plusCode == null || deliveryId == null) {
           return result.error("BAD_ARGS", "plusCode or deliveryId missing", null)
         }
-        DoorstepAI.startDeliveryByPlusCode(plusCode, deliveryId) { sdkResult ->
-          if (sdkResult.isSuccess) {
-            result.success(sdkResult.getOrNull())
-          } else {
-            result.error("DELIVERY_ERR", sdkResult.exceptionOrNull()?.localizedMessage, null)
+        try {
+          DoorstepAI.startDeliveryByPlusCode(plusCode, deliveryId) { sdkResult ->
+            sdkResult.onSuccess { sessionId ->
+              result.success(sessionId)
+            }.onFailure { error ->
+              result.error("DELIVERY_ERROR", error.message ?: "Failed to start delivery by Plus Code", null)
+            }
           }
+        } catch (e: Exception) {
+          result.error("DELIVERY_ERROR", e.message ?: "Failed to start delivery by Plus Code", null)
         }
       }
 
@@ -118,20 +124,26 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
         ) {
           return result.error("BAD_ARGS", "address map missing fields or deliveryId missing", null)
         }
-        val addressType = AddressType(
-          streetNumber = addr["streetNumber"]!!,
-          route = addr["route"]!!,
-          subPremise = addr["subPremise"] ?: "",
-          locality = addr["locality"]!!,
-          administrativeAreaLevel1 = addr["administrativeAreaLevel1"]!!,
-          postalCode = addr["postalCode"]!!
-        )
-        DoorstepAI.startDeliveryByAddressType(addressType, deliveryId) { sdkResult ->
-          if (sdkResult.isSuccess) {
-            result.success(sdkResult.getOrNull())
-          } else {
-            result.error("DELIVERY_ERR", sdkResult.exceptionOrNull()?.localizedMessage, null)
+        
+        try {
+          val addressType = AddressType(
+            streetNumber = addr["streetNumber"]!!,
+            route = addr["route"]!!,
+            subPremise = addr["subPremise"] ?: "",
+            locality = addr["locality"]!!,
+            administrativeAreaLevel1 = addr["administrativeAreaLevel1"]!!,
+            postalCode = addr["postalCode"]!!
+          )
+          
+          DoorstepAI.startDeliveryByAddressType(addressType, deliveryId) { sdkResult ->
+            sdkResult.onSuccess { sessionId ->
+              result.success(sessionId)
+            }.onFailure { error ->
+              result.error("DELIVERY_ERROR", error.message ?: "Failed to start delivery by address", null)
+            }
           }
+        } catch (e: Exception) {
+          result.error("DELIVERY_ERROR", e.message ?: "Failed to start delivery by address", null)
         }
       }
 
@@ -142,15 +154,10 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
           return result.error("BAD_ARGS", "eventName or deliveryId missing", null)
         }
         try {
-          DoorstepAI.newEvent(eventName, deliveryId) { sdkResult ->
-            if (sdkResult.isSuccess) {
-              result.success(sdkResult.getOrNull())
-            } else {
-              result.error("EVENT_ERR", sdkResult.exceptionOrNull()?.localizedMessage, null)
-            }
-          }
+          DoorstepAI.newEvent(eventName, deliveryId) { /* Callback might not be invoked or provide useful data */ }
+          result.success("Event $eventName triggered for $deliveryId")
         } catch (e: Exception) {
-          result.error("EVENT_ERR", e.localizedMessage, null)
+          result.error("EVENT_CREATION_ERROR", e.message ?: "Failed to save event", null)
         }
       }
 
@@ -161,9 +168,9 @@ class DoorstepaiDropoffSdkPlugin: FlutterPlugin, MethodCallHandler {
         }
         try {
           DoorstepAI.stopDelivery(deliveryId)
-          result.success(null)
+          result.success(true)
         } catch (e: Exception) {
-          result.error("STOP_ERR", e.localizedMessage, null)
+          result.error("DELIVERY_STOP_ERROR", e.message ?: "Failed to stop delivery", null)
         }
       }
 

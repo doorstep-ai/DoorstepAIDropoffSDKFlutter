@@ -17,21 +17,28 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
     registrar.register(factory, withId: "DoorstepAIRootView")
   }
 
-   override init() {
-        super.init()
-        locationManager.showsBackgroundLocationIndicator = true
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false
-        
-        // Request authorization
-        locationManager.requestAlwaysAuthorization()
-        
-    }
+  override init() {
+    super.init()
+    locationManager.showsBackgroundLocationIndicator = true
+    locationManager.allowsBackgroundLocationUpdates = true
+    locationManager.pausesLocationUpdatesAutomatically = false
+    
+    // Request authorization
+    locationManager.requestAlwaysAuthorization()
+  }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
+      
+    // case "setDevMode":
+    //   guard let args = call.arguments as? [String: Any],
+    //         let devModeEnabled = args["devModeEnabled"] as? Bool else {
+    //     return result(FlutterError(code: "INVALID_ARGUMENTS", message: "devModeEnabled missing", details: nil))
+    //   }
+    //   DoorstepAI.devMode = devModeEnabled
+    //   result(nil)
       
     case "setApiKey":
       guard let args = call.arguments as? [String: Any],
@@ -52,8 +59,8 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
           try await DoorstepAI.startDeliveryByPlaceID(placeID: placeID, deliveryId: deliveryId)
           result(nil)
         } catch {
-          result(FlutterError(code: "DELIVERY_ERR",
-                            message: (error as? DoorstepAIError)?.localizedDescription,
+          result(FlutterError(code: "E_START_DELIVERY",
+                            message: "Failed to start delivery by Place ID: \(error.localizedDescription)",
                             details: nil))
         }
       }
@@ -69,8 +76,8 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
           try await DoorstepAI.startDeliveryByPlusCode(plusCode: plusCode, deliveryId: deliveryId)
           result(nil)
         } catch {
-          result(FlutterError(code: "DELIVERY_ERR",
-                            message: (error as? DoorstepAIError)?.localizedDescription,
+          result(FlutterError(code: "E_START_DELIVERY",
+                            message: "Failed to start delivery by Plus Code: \(error.localizedDescription)",
                             details: nil))
         }
       }
@@ -84,23 +91,30 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
             let locality = addr["locality"],
             let admin1 = addr["administrativeAreaLevel1"],
             let postal = addr["postalCode"] else {
-        return result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid address arguments or deliveryId missing", details: nil))
+        return result(FlutterError(code: "E_INVALID_ADDRESS", message: "Missing or invalid fields in address dictionary or deliveryId missing", details: nil))
       }
-      let address = AddressType(
-        streetNumber: street,
-        route: route,
-        subPremise: addr["subPremise"] ?? "",
-        locality: locality,
-        administrativeAreaLevel1: admin1,
-        postalCode: postal
-      )
+      
       Task {
+        print("Starting delivery by address: \(addr)")
         do {
+          let address = AddressType(
+            streetNumber: street,
+            route: route,
+            subPremise: addr["subPremise"] ?? "",
+            locality: locality,
+            administrativeAreaLevel1: admin1,
+            postalCode: postal
+          )
+          
           try await DoorstepAI.startDeliveryByAddressType(address: address, deliveryId: deliveryId)
           result(nil)
+        } catch let error as DoorstepAIError {
+          result(FlutterError(code: "E_START_DELIVERY",
+                            message: "Failed to start delivery by address: \(error.localizedDescription)",
+                            details: nil))
         } catch {
-          result(FlutterError(code: "DELIVERY_ERR",
-                            message: (error as? DoorstepAIError)?.localizedDescription,
+          result(FlutterError(code: "E_UNKNOWN",
+                            message: "An unexpected error occurred: \(error.localizedDescription)",
                             details: nil))
         }
       }
@@ -116,8 +130,8 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
           try await DoorstepAI.newEvent(eventName: name, deliveryId: deliveryId)
           result(nil)
         } catch {
-          result(FlutterError(code: "EVENT_ERR",
-                            message: error.localizedDescription,
+          result(FlutterError(code: "E_NEW_EVENT",
+                            message: "Failed to send event: \(error.localizedDescription)",
                             details: nil))
         }
       }
@@ -128,6 +142,7 @@ public class DoorstepaiDropoffSdkPlugin: NSObject, FlutterPlugin {
         return result(FlutterError(code: "INVALID_ARGUMENTS", message: "deliveryId missing", details: nil))
       }
       Task {
+        // stopDelivery does not throw so we simply await its completion
         await DoorstepAI.stopDelivery(deliveryId: deliveryId)
         result(nil)
       }

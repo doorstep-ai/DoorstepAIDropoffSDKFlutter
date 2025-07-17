@@ -27,13 +27,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Loc Always + In Use</string>
+	<string>For enhanced delivery inteliegence</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Loc Always</string>
+	<string>For enhanced delivery inteliegence</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Loc In Use</string>
+	<string>For enhanced delivery inteliegence</string>
 	<key>NSMotionUsageDescription</key>
-	<string></string>
+	<string>For enhanced delivery inteliegence</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

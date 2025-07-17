@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.1 effective-5.10 (swiftlang-6.1.0.110.21 clang-1700.0.13.3)
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
 // swift-module-flags: -target arm64-apple-ios17.5 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name DoorstepDropoffSDK
-// swift-module-flags-ignorable:  -interface-compiler-version 6.1
+// swift-module-flags-ignorable:  -interface-compiler-version 6.1.2
 import Compression
 import CoreLocation
 import CoreMotion
@@ -42,13 +42,15 @@ public enum DoorstepAIError : Swift.Error {
   case invalidAddress
 }
 @_hasMissingDesignatedInitializers public class DoorstepAI {
-  public static var devMode: Swift.Bool
   public static func setApiKey(key: Swift.String)
+  public static func enableDevMode()
   public static func startDeliveryByPlaceID(placeID: Swift.String, deliveryId: Swift.String) async throws
   public static func startDeliveryByPlusCode(plusCode: Swift.String, deliveryId: Swift.String) async throws
   public static func startDeliveryByAddressType(address: DoorstepDropoffSDK.AddressType, deliveryId: Swift.String) async throws
   public static func newEvent(eventName: Swift.String, deliveryId: Swift.String) async throws
   public static func stopDelivery(deliveryId: Swift.String) async
+  public static func hasCachedData() -> Swift.Bool
+  public static func waitForCacheDataCompletion() async -> Swift.Bool
   @objc deinit
 }
 @_Concurrency.MainActor @preconcurrency public struct DoorstepAIRoot : SwiftUICore.View {
